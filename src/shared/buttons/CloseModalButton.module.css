@@ -1,0 +1,13 @@
+.btn:hover {
+  transform: scale(1.2);
+  transition: all 0.3s;
+  & .shadow {
+    display: block;
+    &:first-child {
+      transform: translateY(-3px);
+    }
+    &:last-child {
+      transform: translateX(2px);
+    }
+  }
+}

@@ -1,0 +1,4 @@
+.wrapper:has(.error) .input {
+  background-color: oklch(99.2% 0.058 10.001);
+  border-color: oklch(51.4% 0.222 16.935);
+}

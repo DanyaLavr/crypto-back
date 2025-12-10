@@ -1,0 +1,16 @@
+"use client";
+import { useRouter } from "next/navigation";
+import CloseModalButton from "../buttons/CloseModalButton";
+
+export default function ModalBackground({ children }) {
+  const router = useRouter();
+  return (
+    <div
+      className="w-lg relative bg-stone-50 px-7 py-10 rounded-2xl"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <CloseModalButton className={"absolute top-4 right-2"} />
+      {children}
+    </div>
+  );
+}
