@@ -1,8 +1,9 @@
 "use client";
 
 import { useSearchParams, useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Search from "../Search.svg";
+import Loader from "../loader/Loader";
 export default function SearchInput() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -27,21 +28,23 @@ export default function SearchInput() {
   }, [value, router, query]);
 
   return (
-    <form
-      className="flex w-full items-center gap-2 "
-      action=""
-      onSubmit={(e) => e.preventDefault()}
-    >
-      <input
-        className="outline-0 w-full text-stone-50 placeholder:text-stone-50"
-        type="text"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        placeholder="Search…"
-      />
-      <button>
-        <Search className="fill-stone-50" />
-      </button>
-    </form>
+    <Suspense fallback={<Loader />}>
+      <form
+        className="flex w-full items-center gap-2 "
+        action=""
+        onSubmit={(e) => e.preventDefault()}
+      >
+        <input
+          className="outline-0 w-full text-stone-50 placeholder:text-stone-50"
+          type="text"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          placeholder="Search…"
+        />
+        <button>
+          <Search className="fill-stone-50" />
+        </button>
+      </form>
+    </Suspense>
   );
 }
