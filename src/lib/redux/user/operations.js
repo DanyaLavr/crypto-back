@@ -39,12 +39,11 @@ export const loginUser = createAsyncThunk(
     try {
       const user = await signInWithEmailAndPassword(auth, email, password);
       const backpack = await dispatch(getBackpack(user.user.uid));
-      console.log(backpack);
       return {
         uid: user.user.uid,
         email: user.user.email,
         login: user.user.displayName,
-        // backpack: backpack.payload,
+        backpack: backpack.payload,
       };
     } catch (e) {
       return rejectWithValue(e.message);
