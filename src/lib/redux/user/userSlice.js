@@ -26,11 +26,17 @@ const userSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
+      .addCase(getBackpack.pending, (state) => {
+        state.isLoadingBackpack = true;
+        state.errorBackpack = null;
+      })
       .addCase(getBackpack.fulfilled, (state, action) => {
+        state.isLoadingBackpack = false;
         state.user.backpack = action.payload;
       })
-      .addCase(getBackpack.rejected, (state) => {
-        // state.user.backpack = [];
+      .addCase(getBackpack.rejected, (state, action) => {
+        state.isLoadingBackpack = false;
+        state.errorBackpack = action.payload;
       })
       .addCase(updateCryptoInBackpack.fulfilled, (state, action) => {
         const { isNew, data } = action.payload;
@@ -52,15 +58,15 @@ const userSlice = createSlice({
         console.error(action.payload);
       })
       .addMatcher(isPending(registerUser, loginUser), (state) => {
-        state.isLoading = true;
-        state.error = null;
+        state.isLoadingUser = true;
+        state.errorUser = null;
       })
       .addMatcher(isFulfilled(registerUser, loginUser), (state, action) => {
         state.user = action.payload;
       })
       .addMatcher(isRejected(registerUser, loginUser), (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload;
+        state.isLoadingUser = false;
+        state.errorUser = action.payload;
       });
   },
 });

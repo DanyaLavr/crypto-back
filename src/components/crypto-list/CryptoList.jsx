@@ -7,7 +7,11 @@ import { usePathname, useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import CryptoItem from "./CryptoItem";
 import Loader from "@/shared/loader/Loader";
-import { selectBackpack, selectUser } from "@/lib/redux/user/selectors";
+import {
+  selectBackpack,
+  selectBackpackIsLoading,
+  selectUser,
+} from "@/lib/redux/user/selectors";
 import BackpackItem from "../backpack-item/BackpackItem";
 import { useEffect } from "react";
 import { getBackpack } from "@/lib/redux/user/operations";
@@ -20,7 +24,8 @@ export default function CryptoList() {
   const dispatch = useDispatch();
   const cryptos =
     data === "/" ? allCryptos : data === "/backpack" ? backpackCrypto : [];
-  const isLoading = useSelector(selectCryptosIsLoading);
+  const isLoadingCrypto = useSelector(selectCryptosIsLoading);
+  const isLoadingBackpack = useSelector(selectBackpackIsLoading);
 
   const router = useRouter();
   const handleClick = (e) => {
@@ -34,39 +39,40 @@ export default function CryptoList() {
     };
     fetchData();
   }, [data, backpackCrypto, dispatch, user]);
+
+  if (isLoadingCrypto || isLoadingBackpack) {
+    return (
+      <Loader
+        color="#fff"
+        cssOverride={{ justifySelf: "center", marginTop: "20px" }}
+      />
+    );
+  }
   return (
     <>
-      {isLoading && (
-        <Loader
-          color="#fff"
-          cssOverride={{ justifySelf: "center", marginTop: "20px" }}
-        />
-      )}
-      {!isLoading && cryptos?.length > 0 && (
-        <ul className="flex gap-6 flex-wrap" onClick={handleClick}>
-          {data === "/" &&
-            cryptos.map(({ base, target, last, coin_id }) => (
-              <CryptoItem
-                key={coin_id}
-                base={base}
-                target={target}
-                last={last}
-                coin_id={coin_id}
-              />
-            ))}
-          {data === "/backpack" &&
-            cryptos.map(({ base, coin_id, price, count, invested }) => (
-              <BackpackItem
-                key={coin_id}
-                base={base}
-                price={price}
-                count={count}
-                coin_id={coin_id}
-                invested={invested}
-              />
-            ))}
-        </ul>
-      )}
+      <ul className="flex gap-6 flex-wrap" onClick={handleClick}>
+        {data === "/" &&
+          cryptos?.map(({ base, target, last, coin_id }) => (
+            <CryptoItem
+              key={coin_id}
+              base={base}
+              target={target}
+              last={last}
+              coin_id={coin_id}
+            />
+          ))}
+        {data === "/backpack" &&
+          cryptos?.map(({ base, coin_id, price, count, invested }) => (
+            <BackpackItem
+              key={coin_id}
+              base={base}
+              price={price}
+              count={count}
+              coin_id={coin_id}
+              invested={invested}
+            />
+          ))}
+      </ul>
     </>
   );
 }

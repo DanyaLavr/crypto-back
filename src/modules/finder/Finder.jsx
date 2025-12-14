@@ -9,7 +9,7 @@ const Suggestions = dynamic(() => import("@/shared/suggestions/Suggestions"), {
 });
 export default function Finder() {
   return (
-    <div className="flex-1 relative px-6 py-4 rounded-2xl bg-stone-900 ">
+    <div className="finder flex-1 relative px-6 py-4 rounded-2xl bg-stone-900 ">
       <SearchInput />
       <Suggestions />
     </div>

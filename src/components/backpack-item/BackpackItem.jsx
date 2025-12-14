@@ -11,8 +11,8 @@ export default function BackpackItem({
   invested,
 }) {
   const allCryptos = useSelector(selectCryptos);
-  const currentCrypto = allCryptos.find((elem) => elem.coin_id === coin_id);
-  const getGrowthPercent = ((currentCrypto.last - price) / price) * 100;
+  const currentCrypto = allCryptos?.find((elem) => elem.coin_id === coin_id);
+  const getGrowthPercent = ((currentCrypto?.last - price) / price) * 100;
   const isBiggestThenZero = getGrowthPercent > 0;
   const profit = invested * (getGrowthPercent / 100);
   return (
@@ -21,7 +21,7 @@ export default function BackpackItem({
       <p>Current count - {count}</p>
       <p>Average price - {price}</p>
       <p className="">
-        Current price - {currentCrypto.last}
+        Current price - {currentCrypto?.last}
         <span
           className={`${
             isBiggestThenZero ? "bg-green-600" : "bg-red-700"

@@ -25,7 +25,7 @@ export default function SearchInput() {
     }, 300);
 
     return () => clearTimeout(timeout);
-  }, [value, router, query]);
+  }, [value, router]);
 
   return (
     <Suspense fallback={<Loader />}>
@@ -42,7 +42,7 @@ export default function SearchInput() {
           placeholder="Search…"
         />
         <button>
-          <Search className="fill-stone-50" />
+          <Search className="fill-stone-50 w-8 h-8" />
         </button>
       </form>
     </Suspense>

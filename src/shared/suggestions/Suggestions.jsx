@@ -2,22 +2,38 @@
 import { useQuery } from "@/hooks/useQuery";
 import { selectCryptos } from "@/lib/redux/crypto/selectors";
 
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
 import SuggestionsItem from "./SuggestionsItem";
+import { useRouter } from "next/navigation";
 
 export default function Suggestions() {
   const searchQuery = useQuery();
+  const router = useRouter();
   const cryptos = useSelector(selectCryptos);
+
   const suggestions = useMemo(() => {
     if (!searchQuery) return [];
 
     const name = searchQuery.toLowerCase();
     const base = searchQuery.toUpperCase();
+
     return cryptos.filter(
       (elem) => elem.base.includes(base) || elem.coin_id.includes(name)
     );
   }, [searchQuery, cryptos]);
+
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (!e.target.closest(".finder")) router.back();
+    };
+    if (suggestions.length)
+      document.body.addEventListener("click", handleClick);
+    return () => {
+      document.body.removeEventListener("click", handleClick);
+    };
+  }, [suggestions]);
+
   if (!suggestions.length) return;
   return (
     <ul className=" absolute left-0 w-full overflow-auto max-h-40 bg-stone-900 px-10 py-6 rounded-b-2xl grid gap-3">
