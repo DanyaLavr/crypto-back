@@ -3,7 +3,7 @@ import {
   selectCryptos,
   selectCryptosIsLoading,
 } from "@/lib/redux/crypto/selectors";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import CryptoItem from "./CryptoItem";
 import Loader from "@/shared/loader/Loader";
@@ -13,7 +13,7 @@ import {
   selectUser,
 } from "@/lib/redux/user/selectors";
 import BackpackItem from "../backpack-item/BackpackItem";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { getBackpack } from "@/lib/redux/user/operations";
 
 export default function CryptoList() {
@@ -21,9 +21,22 @@ export default function CryptoList() {
   const allCryptos = useSelector(selectCryptos);
   const backpackCrypto = useSelector(selectBackpack);
   const user = useSelector(selectUser);
+  const searchParams = useSearchParams();
+  const search = searchParams.get("search");
   const dispatch = useDispatch();
   const cryptos =
     data === "/" ? allCryptos : data === "/backpack" ? backpackCrypto : [];
+
+  const filteredCryptos = useMemo(() => {
+    if (!search) return cryptos;
+
+    const name = search.toLowerCase();
+    const base = search.toUpperCase();
+
+    return cryptos.filter(
+      (elem) => elem.base.includes(base) || elem.coin_id.includes(name)
+    );
+  }, [search, cryptos]);
   const isLoadingCrypto = useSelector(selectCryptosIsLoading);
   const isLoadingBackpack = useSelector(selectBackpackIsLoading);
 
@@ -52,7 +65,7 @@ export default function CryptoList() {
     <>
       <ul className="flex gap-6 flex-wrap" onClick={handleClick}>
         {data === "/" &&
-          cryptos?.map(({ base, target, last, coin_id }) => (
+          filteredCryptos?.map(({ base, target, last, coin_id }) => (
             <CryptoItem
               key={coin_id}
               base={base}
@@ -62,7 +75,7 @@ export default function CryptoList() {
             />
           ))}
         {data === "/backpack" &&
-          cryptos?.map(({ base, coin_id, price, count, invested }) => (
+          filteredCryptos?.map(({ base, coin_id, price, count, invested }) => (
             <BackpackItem
               key={coin_id}
               base={base}
