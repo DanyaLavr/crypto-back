@@ -16,7 +16,7 @@ export default function SearchInput() {
     (value) => {
       const params = new URLSearchParams(searchParams);
       params.delete("query");
-      params.set("search", value);
+      params.set("search", value.trim());
       return params.toString();
     },
     [searchParams]
@@ -45,6 +45,7 @@ export default function SearchInput() {
         action=""
         onSubmit={(e) => {
           e.preventDefault();
+          if (!value.trim()) return;
           router.push(`?${setSearchParams(value)}`, { scroll: false });
         }}
       >
