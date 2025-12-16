@@ -4,7 +4,7 @@ import ModalBackground from "@/shared/modal-background/ModalBackground";
 import Overlay from "@/shared/overlay/Overlay";
 import PrivateRoute from "@/shared/private-route/PrivateRoute";
 
-export default function RegistrationModal() {
+export default function PurchaseModal() {
   return (
     <PrivateRoute>
       <Overlay>

@@ -6,7 +6,10 @@ export default function SuggestionsItem({ elem }) {
   const { base, coin_id, last } = elem;
 
   return (
-    <li className="flex items-center bg-stone-950 text-stone-50 px-6 py-4 rounded-2xl cursor-pointer">
+    <li
+      className="flex items-center bg-stone-950 text-stone-50 px-6 py-4 rounded-2xl cursor-pointer"
+      data-id={`${coin_id}-suggestion`}
+    >
       {isShow && (
         <img
           className="aspect-square w-7 mr-5"
