@@ -12,6 +12,7 @@ export const fetchAllCryptos = createAsyncThunk(
           break;
         } catch (e) {
           if (
+            e.response.status === 429 ||
             e.response?.data?.status?.error_message?.includes("API Key Missing")
           )
             keyIndex++;
