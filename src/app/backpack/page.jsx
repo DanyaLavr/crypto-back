@@ -8,10 +8,14 @@ import { Suspense } from "react";
 export const revalidate = 300;
 
 export default async function Backpack() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/cryptos`, {
-    next: { revalidate: 300 },
-  });
-  const cryptos = await res.json();
+  let cryptos = [];
+
+  try {
+    cryptos = await getCryptos();
+  } catch (e) {
+    console.error("Ошибка загрузки крипты:", e.message);
+  }
+
   console.log("Backpack");
 
   return (
