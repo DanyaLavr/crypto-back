@@ -15,7 +15,7 @@ import {
 import BackpackItem from "../backpack-item/BackpackItem";
 import { useEffect, useMemo, useState } from "react";
 import { getBackpack } from "@/lib/redux/user/operations";
-import { addAllCrypto } from "@/lib/redux/crypto/cryptosSlice";
+import { addAllCryptos } from "@/lib/redux/crypto/cryptosSlice";
 
 export default function CryptoList({ cryptos }) {
   const data = usePathname();
@@ -53,8 +53,8 @@ export default function CryptoList({ cryptos }) {
     fetchData();
   }, [data, backpackCrypto, dispatch, user]);
   useEffect(() => {
-    dispatch(addAllCrypto(cryptos));
-  }, [cryptos]);
+    dispatch(addAllCryptos(cryptos));
+  }, [dispatch, cryptos]);
   if (!cryptos) {
     return (
       <Loader
