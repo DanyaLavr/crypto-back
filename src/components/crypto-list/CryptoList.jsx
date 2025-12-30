@@ -1,22 +1,14 @@
 "use client";
-import {
-  selectCryptos,
-  selectCryptosIsLoading,
-} from "@/lib/redux/crypto/selectors";
+
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import CryptoItem from "./CryptoItem";
 import Loader from "@/shared/loader/Loader";
-import {
-  selectBackpack,
-  selectBackpackIsLoading,
-  selectUser,
-} from "@/lib/redux/user/selectors";
+import { selectBackpack, selectUser } from "@/lib/redux/user/selectors";
 import BackpackItem from "../backpack-item/BackpackItem";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { getBackpack } from "@/lib/redux/user/operations";
 import { addAllCryptos } from "@/lib/redux/crypto/cryptosSlice";
-
 export default function CryptoList({ cryptos }) {
   const data = usePathname();
   const backpackCrypto = useSelector(selectBackpack);
@@ -37,8 +29,6 @@ export default function CryptoList({ cryptos }) {
       (elem) => elem.base.includes(base) || elem.coin_id.includes(name)
     );
   }, [search, currentCryptos]);
-  // const isLoadingCrypto = useSelector(selectCryptosIsLoading);
-  // const isLoadingBackpack = useSelector(selectBackpackIsLoading);
 
   const router = useRouter();
   const handleClick = (e) => {

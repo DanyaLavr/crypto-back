@@ -1,25 +1,23 @@
 import { fetchCryptos } from "@/api/fetchCryptos";
-let keyIndex = 0;
+
+const MAX_KEYS = 7;
 
 export async function GET() {
   try {
     let data;
-    while (true) {
+    for (let keyIndex = 0; keyIndex < MAX_KEYS; keyIndex++) {
       try {
         data = await fetchCryptos(1, keyIndex);
-        break;
       } catch (e) {
         if (
           e.response?.status === 429 ||
           e.response?.data?.status?.error_message?.includes("API Key Missing")
         ) {
-          keyIndex++;
-        } else {
-          throw e;
+          continue;
         }
+        throw e;
       }
     }
-
     return new Response(JSON.stringify(data), {
       status: 200,
       headers: { "Content-Type": "application/json" },

@@ -1,22 +1,20 @@
-import { getCryptos } from "@/api/getCryptos";
-import { getNextCrypto } from "@/api/getNextCrypto";
 import CryptoList from "@/components/crypto-list/CryptoList";
 import Loader from "@/shared/loader/Loader";
 import Section from "@/shared/section/Section";
 import { Suspense } from "react";
 
-export const revalidate = 300;
-
 export default async function Backpack() {
   let cryptos = [];
-
   try {
-    cryptos = await getCryptos();
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/cryptos`, {
+      next: { revalidate: 300 },
+    });
+    if (res.ok) {
+      cryptos = await res.json();
+    }
   } catch (e) {
-    console.error("Ошибка загрузки крипты:", e.message);
+    console.error(e.message);
   }
-
-  console.log("Backpack");
 
   return (
     <Section>
