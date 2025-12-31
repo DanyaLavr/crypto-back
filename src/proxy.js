@@ -8,12 +8,18 @@ export async function proxy(request) {
   const pathname = request.nextUrl.pathname;
   if (
     !session &&
-    (pathname.startsWith("/backpack") || pathname.startsWith("/purchase"))
+    (pathname === "/backpack" ||
+      pathname.startsWith("/backpack/") ||
+      pathname === "/purchase" ||
+      pathname.startsWith("/purchase/"))
   )
     return NextResponse.redirect(new URL("/login", request.url));
   if (
     session &&
-    (pathname.startsWith("/login") || pathname.startsWith("/register"))
+    (pathname === "/login" ||
+      pathname.startsWith("/login/") ||
+      pathname === "/register" ||
+      pathname.startsWith("/register/"))
   )
     return NextResponse.redirect(new URL("/", request.url));
 }
@@ -22,5 +28,12 @@ export async function proxy(request) {
 // export default function proxy(request) { ... }
 
 export const config = {
-  matcher: ["/backpack", "/purchase/:path*", "/login", "/register"],
+  matcher: [
+    "/backpack",
+    "/backpack/:path*",
+    "/purchase",
+    "/purchase/:path*",
+    "/login",
+    "/register",
+  ],
 };
