@@ -1,8 +1,9 @@
-import { getCryptos } from "@/api/getCrypto";
-import CryptoList from "@/components/crypto-list/CryptoList";
-import Loader from "@/shared/loader/Loader";
-import Section from "@/shared/section/Section";
 import { Suspense } from "react";
+
+import { getCryptos } from "@/api/getCrypto";
+
+import CryptoList from "@/components/crypto-list/CryptoList";
+import Section from "@/shared/section/Section";
 
 export const revalidate = 300;
 
@@ -10,7 +11,7 @@ export default async function Backpack() {
   const cryptos = await getCryptos();
   return (
     <Section>
-      <Suspense fallback={<Loader />}>
+      <Suspense>
         <CryptoList cryptos={cryptos} />
       </Suspense>
     </Section>

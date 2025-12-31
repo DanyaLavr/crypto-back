@@ -10,7 +10,14 @@ export default async function Home() {
   const cryptos = await getCryptos();
   return (
     <Section>
-      <Suspense fallback={<Loader />}>
+      <Suspense
+        fallback={
+          <Loader
+            color="#fff"
+            cssOverride={{ justifySelf: "center", marginTop: "20px" }}
+          />
+        }
+      >
         <CryptoList cryptos={cryptos} />
       </Suspense>
     </Section>
