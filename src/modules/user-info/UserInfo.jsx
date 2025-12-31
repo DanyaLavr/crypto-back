@@ -2,7 +2,6 @@
 
 import { logoutUser } from "@/lib/redux/user/operations";
 import { selectUser } from "@/lib/redux/user/selectors";
-import { logout } from "@/lib/redux/user/userSlice";
 import Button from "@/shared/buttons/Button";
 import { useDispatch, useSelector } from "react-redux";
 

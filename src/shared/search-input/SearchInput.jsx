@@ -2,11 +2,10 @@
 
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useState, useEffect, Suspense, useCallback } from "react";
-// import Search from "../Search.svg";
+import Search from "../Search.svg";
 import Loader from "../loader/Loader";
 export default function SearchInput() {
   const searchParams = useSearchParams();
-  const pathname = usePathname();
   const router = useRouter();
 
   const query = searchParams.get("query") ?? "";
@@ -57,7 +56,7 @@ export default function SearchInput() {
           placeholder="Search…"
         />
         <button className="cursor-pointer">
-          {/* <Search className="fill-stone-50 w-8 h-8" /> */}
+          <Search className="fill-stone-50 w-8 h-8" />
         </button>
       </form>
     </Suspense>
