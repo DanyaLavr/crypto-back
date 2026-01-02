@@ -1,7 +1,7 @@
 "use client";
 
+import { logoutUser } from "@/lib/redux/user/operations";
 import { selectUser } from "@/lib/redux/user/selectors";
-import { logout } from "@/lib/redux/user/userSlice";
 import Button from "@/shared/buttons/Button";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -18,7 +18,7 @@ export default function UserInfo() {
         background={false}
         className="h-full border-2 py-0 px-9 rounded-2xl"
         onClick={() => {
-          dispatch(logout());
+          dispatch(logoutUser());
         }}
       >
         Log out
