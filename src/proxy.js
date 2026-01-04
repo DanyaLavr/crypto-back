@@ -21,6 +21,7 @@ export async function proxy(request) {
     if (pathname === "/register" || pathname.startsWith("/register/"))
       return NextResponse.redirect(new URL("/", request.url));
   }
+  return NextResponse.next();
 }
 
 // Alternatively, you can use a default export:
