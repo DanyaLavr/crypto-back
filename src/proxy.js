@@ -5,14 +5,20 @@ import { NextResponse } from "next/server";
 export async function proxy(request) {
   const cookieStore = await cookies();
   const session = cookieStore.get("session");
-  const pathname = request.nextUrl.pathname;
+  //* сокращаем синтаксис
+  const { pathname } = request.nextUrl;
 
   if (!session) {
-    // if (pathname === "/backpack" || pathname.startsWith("/backpack/"))
-    //   return NextResponse.redirect(new URL("/login", request.url));
-    if (!session && request.nextUrl.pathname.startsWith("/backpack")) {
+    //* не работает
+    if (pathname === "/backpack" || pathname.startsWith("/backpack/"))
       return NextResponse.redirect(new URL("/login", request.url));
-    }
+
+    //* работает
+    // if (!session && request.nextUrl.pathname.startsWith("/backpack")) {
+    //   return NextResponse.redirect(new URL("/login", request.url));
+    // }
+
+    //* работает
     if (pathname === "/purchase" || pathname.startsWith("/purchase/"))
       return NextResponse.redirect(new URL("/login", request.url));
   }
