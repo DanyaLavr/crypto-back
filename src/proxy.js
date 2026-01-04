@@ -4,8 +4,8 @@ import { NextResponse } from "next/server";
 // This function can be marked `async` if using `await` inside
 export async function proxy(request) {
   const cookieStore = await cookies();
-  // const session = cookieStore.get("session");
-  const session = request.cookies.get("session")?.value;
+  const session = cookieStore.get("session");
+
   const { pathname } = request.nextUrl;
 
   if (!session) {
