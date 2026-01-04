@@ -12,12 +12,12 @@ export const revalidate = 300;
 export default async function Backpack() {
   const cryptos = await getCryptos();
 
-  const cookieStore = await cookies();
-  const session = cookieStore.get("session");
+  // const cookieStore = await cookies();
+  // const session = cookieStore.get("session");
 
-  if (!session) {
-    redirect("/login");
-  }
+  // if (!session) {
+  //   redirect("/login");
+  // }
 
   return (
     <Section>

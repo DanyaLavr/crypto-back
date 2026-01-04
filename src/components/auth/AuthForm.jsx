@@ -87,7 +87,7 @@ export default function AuthForm() {
     link,
     button,
     callback,
-  } = types[pathname.replace("/", "")];
+  } = types[pathname.replace("/", "").replace("(.)", "")];
   return (
     <Formik
       initialValues={initialValues}
