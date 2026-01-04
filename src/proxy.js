@@ -9,8 +9,9 @@ export async function proxy(request) {
   const { pathname } = request.nextUrl;
 
   if (!session) {
-    if (pathname === "/backpack" || pathname.startsWith("/backpack/"))
+    if (request.nextUrl.pathname.startsWith("/backpack")) {
       return NextResponse.redirect(new URL("/login", request.url));
+    }
     if (pathname === "/purchase" || pathname.startsWith("/purchase/"))
       return NextResponse.redirect(new URL("/login", request.url));
   }
