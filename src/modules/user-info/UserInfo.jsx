@@ -3,11 +3,13 @@
 import { logoutUser } from "@/lib/redux/user/operations";
 import { selectUser } from "@/lib/redux/user/selectors";
 import Button from "@/shared/buttons/Button";
+import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function UserInfo() {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
+  const router = useRouter();
   if (!user) return null;
 
   return (
@@ -17,8 +19,9 @@ export default function UserInfo() {
         color="light"
         background={false}
         className="h-full border-2 py-0 px-9 rounded-2xl"
-        onClick={() => {
-          dispatch(logoutUser());
+        onClick={async () => {
+          await dispatch(logoutUser()).unwrap();
+          router.refresh();
         }}
       >
         Log out
