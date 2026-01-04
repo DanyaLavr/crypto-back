@@ -8,8 +8,8 @@ export async function proxy(request) {
   const pathname = request.nextUrl.pathname;
 
   if (!session) {
-    if (pathname === "/backpack" || pathname.startsWith("/backpack/"))
-      return NextResponse.redirect(new URL("/login", request.url));
+    // if (pathname === "/backpack" || pathname.startsWith("/backpack/"))
+    //   return NextResponse.redirect(new URL("/login", request.url));
     if (pathname === "/purchase" || pathname.startsWith("/purchase/"))
       return NextResponse.redirect(new URL("/login", request.url));
   }
@@ -27,8 +27,8 @@ export async function proxy(request) {
 
 export const config = {
   matcher: [
-    "/backpack",
-    "/backpack/:path*",
+    // "/backpack",
+    // "/backpack/:path*",
     "/purchase",
     "/purchase/:path*",
     "/login",
