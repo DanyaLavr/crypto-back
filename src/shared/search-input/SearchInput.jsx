@@ -6,7 +6,6 @@ import Search from "../Search.svg";
 import Loader from "../loader/Loader";
 export default function SearchInput() {
   const searchParams = useSearchParams();
-  const pathname = usePathname();
   const router = useRouter();
 
   const query = searchParams.get("query") ?? "";

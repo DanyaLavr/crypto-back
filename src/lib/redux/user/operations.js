@@ -3,13 +3,16 @@ import { db } from "@/lib/firebase/db";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   createUserWithEmailAndPassword,
+  getIdToken,
   signInWithEmailAndPassword,
+  signOut,
   updateProfile,
 } from "firebase/auth";
 import { arrayUnion, doc, setDoc, updateDoc } from "firebase/firestore";
 import cleanPrice from "@/funcs/cleanPrice";
 import getNewPrice from "@/funcs/getNewPrice";
 import { fetchUserBackpack } from "@/api/fetchUserBackpack";
+import axios from "axios";
 
 export const registerUser = createAsyncThunk(
   "user/registerUser",
@@ -20,6 +23,9 @@ export const registerUser = createAsyncThunk(
     try {
       const user = await createUserWithEmailAndPassword(auth, email, password);
       await updateProfile(user.user, { displayName: login });
+      const token = await getIdToken(user.user);
+      await axios.post("/api/auth/login", { token });
+
       return { uid: user.user.uid, email, login, backpack: [] };
     } catch (e) {
       return rejectWithValue(e.message);
@@ -32,11 +38,26 @@ export const loginUser = createAsyncThunk(
   async ({ email, password }, { rejectWithValue }) => {
     try {
       const user = await signInWithEmailAndPassword(auth, email, password);
+      const token = await getIdToken(user.user);
+
+      await axios.post("/api/auth/login", { token });
       return {
         uid: user.user.uid,
         email: user.user.email,
         login: user.user.displayName,
       };
+    } catch (e) {
+      return rejectWithValue(e.message);
+    }
+  }
+);
+export const logoutUser = createAsyncThunk(
+  "user/logoutUser",
+  async (_, { rejectWithValue }) => {
+    try {
+      const user = await signOut(auth);
+      await axios.delete("/api/auth/logout");
+      return;
     } catch (e) {
       return rejectWithValue(e.message);
     }

@@ -1,44 +1,35 @@
 "use client";
-import {
-  selectCryptos,
-  selectCryptosIsLoading,
-} from "@/lib/redux/crypto/selectors";
+
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import CryptoItem from "./CryptoItem";
 import Loader from "@/shared/loader/Loader";
-import {
-  selectBackpack,
-  selectBackpackIsLoading,
-  selectUser,
-} from "@/lib/redux/user/selectors";
+import { selectBackpack, selectUser } from "@/lib/redux/user/selectors";
 import BackpackItem from "../backpack-item/BackpackItem";
 import { useEffect, useMemo } from "react";
 import { getBackpack } from "@/lib/redux/user/operations";
+import { addAllCryptos } from "@/lib/redux/crypto/cryptosSlice";
 
-export default function CryptoList() {
+export default function CryptoList({ cryptos }) {
   const data = usePathname();
-  const allCryptos = useSelector(selectCryptos);
   const backpackCrypto = useSelector(selectBackpack);
   const user = useSelector(selectUser);
   const searchParams = useSearchParams();
   const search = searchParams.get("search");
   const dispatch = useDispatch();
-  const cryptos =
-    data === "/" ? allCryptos : data === "/backpack" ? backpackCrypto : [];
+  const currentCryptos =
+    data === "/" ? cryptos : data === "/backpack" ? backpackCrypto : [];
 
   const filteredCryptos = useMemo(() => {
-    if (!search) return cryptos;
+    if (!search) return currentCryptos;
 
     const name = search.toLowerCase();
     const base = search.toUpperCase();
 
-    return cryptos.filter(
+    return currentCryptos.filter(
       (elem) => elem.base.includes(base) || elem.coin_id.includes(name)
     );
-  }, [search, cryptos]);
-  const isLoadingCrypto = useSelector(selectCryptosIsLoading);
-  const isLoadingBackpack = useSelector(selectBackpackIsLoading);
+  }, [search, currentCryptos]);
 
   const router = useRouter();
   const handleClick = (e) => {
@@ -52,8 +43,10 @@ export default function CryptoList() {
     };
     fetchData();
   }, [data, backpackCrypto, dispatch, user]);
-
-  if (isLoadingCrypto || isLoadingBackpack) {
+  useEffect(() => {
+    dispatch(addAllCryptos(cryptos));
+  }, [dispatch, cryptos]);
+  if (!filteredCryptos) {
     return (
       <Loader
         color="#fff"
@@ -83,6 +76,7 @@ export default function CryptoList() {
               count={count}
               coin_id={coin_id}
               invested={invested}
+              currentCrypto={cryptos.find((elem) => elem.coin_id === coin_id)}
             />
           ))}
       </ul>

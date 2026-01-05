@@ -87,7 +87,7 @@ export default function AuthForm() {
     link,
     button,
     callback,
-  } = types[pathname.replace("/", "")];
+  } = types[pathname.replace("/", "").replace("(.)", "")];
   return (
     <Formik
       initialValues={initialValues}
@@ -95,7 +95,10 @@ export default function AuthForm() {
       onSubmit={async (values) => {
         try {
           const res = await dispatch(callback(values));
-          if (res.type === `user/${name}/fulfilled`) router.back();
+          if (res.type === `user/${name}/fulfilled`) {
+            router.back();
+            router.refresh();
+          }
           if (res.type === `user/registerUser/fulfilled`)
             await dispatch(createBackpack(res.payload.uid));
         } catch (e) {

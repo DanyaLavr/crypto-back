@@ -1,14 +1,20 @@
+import { Suspense } from "react";
+
+import { getCryptos } from "@/api/getCrypto";
+
 import CryptoList from "@/components/crypto-list/CryptoList";
 import Section from "@/shared/section/Section";
 
-import PrivateRoute from "@/shared/private-route/PrivateRoute";
+export const revalidate = 300;
 
-export default function Backpack() {
+export default async function Backpack() {
+  const cryptos = await getCryptos();
+
   return (
-    <PrivateRoute>
-      <Section>
-        <CryptoList />
-      </Section>
-    </PrivateRoute>
+    <Section>
+      <Suspense>
+        <CryptoList cryptos={cryptos} />
+      </Suspense>
+    </Section>
   );
 }

@@ -11,7 +11,6 @@ export default function Suggestions() {
   const searchQuery = useQuery();
   const router = useRouter();
   const cryptos = useSelector(selectCryptos);
-
   const suggestions = useMemo(() => {
     if (!searchQuery) return [];
 
