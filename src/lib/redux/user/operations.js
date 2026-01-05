@@ -3,6 +3,7 @@ import { db } from "@/lib/firebase/db";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   createUserWithEmailAndPassword,
+  getIdToken,
   signInWithEmailAndPassword,
   signOut,
   updateProfile,
@@ -22,7 +23,8 @@ export const registerUser = createAsyncThunk(
     try {
       const user = await createUserWithEmailAndPassword(auth, email, password);
       await updateProfile(user.user, { displayName: login });
-      await axios.post("/api/auth/login", { token: "12345678" });
+      const token = await getIdToken(user);
+      await axios.post("/api/auth/login", { token });
 
       return { uid: user.user.uid, email, login, backpack: [] };
     } catch (e) {
@@ -36,7 +38,9 @@ export const loginUser = createAsyncThunk(
   async ({ email, password }, { rejectWithValue }) => {
     try {
       const user = await signInWithEmailAndPassword(auth, email, password);
-      await axios.post("/api/auth/login", { token: "12345678" });
+      const token = await getIdToken(user);
+
+      await axios.post("/api/auth/login", { token });
       return {
         uid: user.user.uid,
         email: user.user.email,
