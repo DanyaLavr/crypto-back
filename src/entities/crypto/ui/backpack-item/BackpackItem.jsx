@@ -40,7 +40,7 @@ export default function BackpackItem({
       </div>
 
       <button
-        className="mt-4 py-3 bg-stone-800 hover:bg-stone-700 text-stone-50 rounded-md text-sm transition-colors"
+        className="mt-4 py-3 bg-stone-800 hover:bg-stone-700 text-stone-50 rounded-md text-sm transition-colors cursor-pointer"
         data-id={coin_id}
       >
         Purchase
