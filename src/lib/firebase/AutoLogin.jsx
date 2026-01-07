@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/lib/firebase/auth";
 import { useDispatch } from "react-redux";
-import { loginUser } from "../redux/user/operations";
+import { loginUser } from "../../entities/user/modules/redux/operations";
 
 export default function AutoLogin() {
   const dispatch = useDispatch();

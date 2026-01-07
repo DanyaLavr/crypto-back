@@ -1,0 +1,1 @@
+export { purchaseFormConfig } from "./purchaseFormConfig";
