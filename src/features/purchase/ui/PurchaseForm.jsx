@@ -8,10 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { purchaseFormConfig } from "../config";
 import { purchaseInitialValues, purchaseSchema } from "../lib/formik/constants";
 import { selectCryptoById } from "@/entities/crypto/modules/redux/selectors";
-import {
-  getBackpack,
-  updateCryptoInBackpack,
-} from "@/entities/user/modules/redux/operations";
+import { getBackpack } from "@/entities/user/modules/redux/operations";
 import {
   selectBackpack,
   selectUser,
