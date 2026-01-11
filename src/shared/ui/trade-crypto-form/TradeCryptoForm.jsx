@@ -2,6 +2,7 @@
 import { selectCryptoById } from "@/entities/crypto/modules/redux/selectors";
 import {
   selectBackpack,
+  selectBackpackError,
   selectUser,
 } from "@/entities/user/modules/redux/selectors";
 import { useParams, usePathname } from "next/navigation";
@@ -11,12 +12,17 @@ import Loader from "../loader";
 import { Form, Formik } from "formik";
 import FormItem from "../form-item";
 import { Button } from "../buttons";
+import ExtraButtons from "./ExtraButtons";
 
-const TradeCryptoForm = ({ config, handlers }) => {
+const TradeCryptoForm = ({ config, handlers, extraButtons = false }) => {
   const { coin_id } = useParams();
   const pathname = usePathname();
   const { uid } = useSelector(selectUser);
   const backpackCrypto = useSelector(selectBackpack);
+  const error = useSelector(selectBackpackError);
+  const cryptoForSell = backpackCrypto?.find(
+    (elem) => elem.coin_id === coin_id
+  );
   const selectedCrypto = useSelector(selectCryptoById(coin_id)) || {};
   const dispatch = useDispatch();
   const crypto = { ...selectedCrypto };
@@ -32,7 +38,10 @@ const TradeCryptoForm = ({ config, handlers }) => {
     return (
       <Loader
         color="#000"
-        cssOverride={{ marginBottom: "40px", marginTop: "40px" }}
+        cssOverride={{
+          marginBottom: "40px",
+          marginTop: "40px",
+        }}
       />
     );
   const { inputs, initialValues, validationSchema } = config;
@@ -45,20 +54,34 @@ const TradeCryptoForm = ({ config, handlers }) => {
     >
       {({ values, setFieldValue }) => (
         <Form className="grid gap-6">
-          {inputs.map(({ name, placeholder }, idx) => (
-            <FormItem
-              key={idx}
-              name={name}
-              placeholder={placeholder}
-              type="number"
-              onChange={(e) => handleChange(e, values, setFieldValue)}
-            />
+          {inputs.map(({ name, placeholder, buttons }, idx) => (
+            <div className="">
+              <FormItem
+                key={name}
+                name={name}
+                placeholder={placeholder}
+                type="number"
+                onChange={(e) => handleChange(e, values, setFieldValue)}
+              />
+              {extraButtons && buttons?.length && (
+                <ExtraButtons
+                  buttons={buttons}
+                  name={name}
+                  cryptoForSell={cryptoForSell}
+                  crypto={crypto}
+                  handlers={handlers}
+                  setFieldValue={setFieldValue}
+                  values={values}
+                />
+              )}
+            </div>
           ))}
           <div className="flex justify-self-end">
             <Button type="submit" color="light">
               Submit
             </Button>
           </div>
+          {error && <div className="text-center">{error}</div>}
         </Form>
       )}
     </Formik>

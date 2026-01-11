@@ -5,7 +5,13 @@ import { useSellFormHandlers } from "../modules/useSellFormHandlers";
 
 const SellForm = () => {
   const handlers = useSellFormHandlers();
-  return <TradeCryptoForm config={sellFormConfig} handlers={handlers} />;
+  return (
+    <TradeCryptoForm
+      config={sellFormConfig}
+      handlers={handlers}
+      extraButtons={true}
+    />
+  );
 };
 
 export default SellForm;

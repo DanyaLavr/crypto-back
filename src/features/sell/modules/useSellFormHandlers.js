@@ -11,8 +11,8 @@ export const useSellFormHandlers = () => {
   const { coin_id } = useParams();
   const selectedCrypto = useSelector(selectCryptoById(coin_id)) || {};
 
-  const handleSubmit = (values) => {
-    dispatch(
+  const handleSubmit = async (values) => {
+    await dispatch(
       updateBackpackOnSell({
         id: uid,
         data: {
@@ -23,7 +23,7 @@ export const useSellFormHandlers = () => {
           sellAmount: Number(values.sellAmount),
         },
       })
-    );
+    ).unwrap();
     router.back();
   };
   const handleChange = (e, values, setFieldValue) => {
@@ -35,16 +35,16 @@ export const useSellFormHandlers = () => {
       [name]: Number(value),
     };
 
-    if (updated.invested && updated.price && name !== "count") {
-      setFieldValue("count", updated.invested / updated.price);
+    if (updated.sellAmount && updated.price && name !== "count") {
+      setFieldValue("count", updated.sellAmount / updated.price);
       return;
     }
     if (updated.count && updated.price && name !== "invested") {
-      setFieldValue("invested", updated.count * updated.price);
+      setFieldValue("sellAmount", updated.count * updated.price);
       return;
     }
-    if (updated.count && updated.invested && name !== "price") {
-      setFieldValue("price", updated.invested / updated.count);
+    if (updated.count && updated.sellAmount && name !== "price") {
+      setFieldValue("price", updated.sellAmount / updated.count);
       return;
     }
   };

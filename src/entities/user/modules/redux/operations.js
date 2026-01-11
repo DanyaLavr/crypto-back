@@ -132,14 +132,14 @@ export const updateBackpackOnSell = createAsyncThunk(
     try {
       const [prevBackpack, indexOfCrypto] = getPrevBackpack(getState, data);
       const newData = [...prevBackpack];
-
+      let isDeleted = false;
       const prevCrypto = prevBackpack[indexOfCrypto];
 
       if (indexOfCrypto === -1)
-        throw new Error("You haven't this crypto in backpack");
+        return rejectWithValue("You don't have this crypto in your backpack");
 
       if (data.count > prevCrypto.count)
-        throw new Error(`Count can't be more then ${prevCrypto.count}`);
+        return rejectWithValue(`Count can't be more than ${prevCrypto.count}`);
 
       newData[indexOfCrypto] = {
         ...prevCrypto,
@@ -147,11 +147,14 @@ export const updateBackpackOnSell = createAsyncThunk(
         price: prevCrypto.price,
         invested: prevCrypto.invested - prevCrypto.price * data.count,
       };
-
+      if (newData[indexOfCrypto].count === 0) {
+        newData.splice(indexOfCrypto, 1);
+        isDeleted = true;
+      }
       await setDoc(doc(db, "backpack", id), {
         data: newData,
       });
-      return { data };
+      return { isDeleted, data };
     } catch (e) {
       return rejectWithValue(e.message);
     }

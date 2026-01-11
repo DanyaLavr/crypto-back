@@ -11,8 +11,8 @@ export const usePurchaseFormHandlers = () => {
   const { coin_id } = useParams();
   const selectedCrypto = useSelector(selectCryptoById(coin_id)) || {};
 
-  const handleSubmit = (values) => {
-    dispatch(
+  const handleSubmit = async (values) => {
+    await dispatch(
       updateBackpackOnPurchase({
         id: uid,
         data: {
@@ -23,7 +23,7 @@ export const usePurchaseFormHandlers = () => {
           invested: Number(values.invested),
         },
       })
-    );
+    ).unwrap();
     router.back();
   };
   const handleChange = (e, values, setFieldValue) => {

@@ -9,10 +9,12 @@ export const sellFormConfig = {
     },
     {
       name: "count",
+      buttons: [10, 25, 50, 75, 100],
     },
     {
       name: "sellAmount",
       placeholder: "Amount for sell",
+      buttons: [10, 25, 50, 75, 100],
     },
   ],
 };
