@@ -11,31 +11,31 @@ const ExtraButtons = ({
   return (
     <ul className="flex gap-2 mt-2">
       {buttons.map((elem, idx) => (
-        <li
-          key={idx}
-          onClick={() => {
-            setFieldValue(
-              name,
-              name !== "sellAmount"
-                ? (cryptoForSell[name] * elem) / 100
-                : (crypto.last * cryptoForSell.count * elem) / 100
-            );
-            handleChange(
-              {
-                target: {
-                  name,
-                  value:
-                    name !== "sellAmount"
-                      ? (cryptoForSell[name] * elem) / 100
-                      : (crypto.last * cryptoForSell.count * elem) / 100,
+        <li key={idx}>
+          <button
+            type="button"
+            className="px-3 py-1.5 text-xs font-semibold tracking-wide rounded bg-zinc-800 text-zinc-200 hover:bg-zinc-700 border border-zinc-700 active:bg-zinc-600 active:scale-95"
+            onClick={() => {
+              const value =
+                name !== "sellAmount"
+                  ? (cryptoForSell[name] * elem) / 100
+                  : (crypto.last * cryptoForSell.count * elem) / 100;
+
+              setFieldValue(name, value);
+              handleChange(
+                {
+                  target: {
+                    name,
+                    value,
+                  },
                 },
-              },
-              values,
-              setFieldValue
-            );
-          }}
-        >
-          {elem}%
+                values,
+                setFieldValue
+              );
+            }}
+          >
+            {elem}%
+          </button>
         </li>
       ))}
     </ul>
