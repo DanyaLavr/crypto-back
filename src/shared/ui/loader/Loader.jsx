@@ -5,7 +5,12 @@ export default function Loader({ size, color, cssOverride }) {
     <SyncLoader
       size={size}
       color={color}
-      cssOverride={{ ...cssOverride, textAlign: "center" }}
+      cssOverride={{
+        ...cssOverride,
+        textAlign: "center",
+        display: "flex",
+        justifyContent: "center",
+      }}
     />
   );
 }

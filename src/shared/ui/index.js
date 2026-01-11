@@ -1,8 +1,10 @@
 export { default as AuthForm } from "./auth-form";
+export { default as TradeCryptoForm } from "./trade-crypto-form";
 export * from "./buttons";
 export { default as FormItem } from "./form-item";
 export { default as Loader } from "./loader";
 export { default as ModalBackground } from "./modal-background";
+export { default as ModalHeader } from "./modal-header";
 export { default as Overlay } from "./overlay";
 export { default as SearchInput } from "./search-input";
 export { default as Section } from "./section";

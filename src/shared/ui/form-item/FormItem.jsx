@@ -10,10 +10,10 @@ export default function FormItem({
   return (
     <div className={`${styles.wrapper} grid gap-1.5 `}>
       <Field
-        className={`${styles.input} bg-white text-stone-950 border-2 border-gray-800 rounded-xl px-4 py-2 shadow-sm focus:border-blue-600 focus:ring-2 focus:ring-blue-300 transition-all duration-300 placeholder:text-gray-400`}
+        className={`${styles.input} bg-white text-stone-950 border-2 border-gray-800 rounded-xl px-4 py-2 shadow-sm focus:border-blue-600 focus:ring-2 focus:ring-blue-300 transition-all duration-300 placeholder:text-gray-400 `}
         type={type ? type : name}
         name={name}
-        placeholder={placeholder || name}
+        placeholder={placeholder || name[0].toUpperCase() + name.slice(1)}
         {...(onChange && { onChange })}
       />
       <ErrorMessage

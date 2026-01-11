@@ -1,10 +1,10 @@
 import { selectCryptoById } from "@/entities/crypto/modules/redux/selectors";
-import { updateBackpackOnPurchase } from "@/entities/user/modules/redux/operations";
+import { updateBackpackOnSell } from "@/entities/user/modules/redux/operations";
 import { selectUser } from "@/entities/user/modules/redux/selectors";
 import { useParams, useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 
-export const usePurchaseFormHandlers = () => {
+export const useSellFormHandlers = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { uid } = useSelector(selectUser);
@@ -13,14 +13,14 @@ export const usePurchaseFormHandlers = () => {
 
   const handleSubmit = async (values) => {
     await dispatch(
-      updateBackpackOnPurchase({
+      updateBackpackOnSell({
         id: uid,
         data: {
           coin_id,
           base: selectedCrypto.base,
           price: Number(values.price),
           count: Number(values.count),
-          invested: Number(values.invested),
+          sellAmount: Number(values.sellAmount),
         },
       })
     ).unwrap();
@@ -35,16 +35,16 @@ export const usePurchaseFormHandlers = () => {
       [name]: Number(value),
     };
 
-    if (updated.invested && updated.price && name !== "count") {
-      setFieldValue("count", updated.invested / updated.price);
+    if (updated.sellAmount && updated.price && name !== "count") {
+      setFieldValue("count", updated.sellAmount / updated.price);
       return;
     }
     if (updated.count && updated.price && name !== "invested") {
-      setFieldValue("invested", updated.count * updated.price);
+      setFieldValue("sellAmount", updated.count * updated.price);
       return;
     }
-    if (updated.count && updated.invested && name !== "price") {
-      setFieldValue("price", updated.invested / updated.count);
+    if (updated.count && updated.sellAmount && name !== "price") {
+      setFieldValue("price", updated.sellAmount / updated.count);
       return;
     }
   };

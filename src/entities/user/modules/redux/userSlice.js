@@ -10,7 +10,8 @@ import {
   loginUser,
   logoutUser,
   registerUser,
-  updateCryptoInBackpack,
+  updateBackpackOnPurchase,
+  updateBackpackOnSell,
 } from "./operations";
 import cleanPrice from "@/entities/crypto/modules/cleanPrice";
 import getNewPrice from "@/entities/crypto/modules/getNewPrice";
@@ -22,24 +23,17 @@ const userSlice = createSlice({
     autoLogin: (state, action) => {
       state.user = action.payload;
     },
-    logout: (state) => (state = USER_STATE),
+    logout: () => USER_STATE,
   },
 
   extraReducers: (builder) => {
     builder
-      .addCase(getBackpack.pending, (state) => {
-        state.isLoadingBackpack = true;
-        state.errorBackpack = null;
-      })
+
       .addCase(getBackpack.fulfilled, (state, action) => {
         state.isLoadingBackpack = false;
         state.user.backpack = action.payload;
       })
-      .addCase(getBackpack.rejected, (state, action) => {
-        state.isLoadingBackpack = false;
-        state.errorBackpack = action.payload;
-      })
-      .addCase(updateCryptoInBackpack.fulfilled, (state, action) => {
+      .addCase(updateBackpackOnPurchase.fulfilled, (state, action) => {
         const { isNew, data } = action.payload;
         if (isNew) state.user.backpack.push(data);
         else
@@ -55,10 +49,45 @@ const userSlice = createSlice({
             return elem;
           });
       })
-      .addCase(updateCryptoInBackpack.rejected, (state, action) => {
-        console.error(action.payload);
+      .addCase(updateBackpackOnSell.fulfilled, (state, action) => {
+        const { isDeleted, data } = action.payload;
+
+        if (isDeleted)
+          state.user.backpack.splice(
+            state.user.backpack.findIndex(
+              (elem) => elem.coin_id === data.coin_id
+            ),
+            1
+          );
+        else
+          state.user.backpack = state.user.backpack.map((elem) => {
+            if (elem.coin_id === data.coin_id) {
+              return {
+                ...elem,
+                count: elem.count - data.count,
+                price: elem.price,
+                invested: elem.invested + elem.price * data.count,
+              };
+            }
+            return elem;
+          });
       })
       .addCase(logoutUser.fulfilled, () => USER_STATE)
+
+      .addMatcher(
+        isPending(getBackpack, updateBackpackOnPurchase, updateBackpackOnSell),
+        (state) => {
+          state.isLoadingBackpack = true;
+          state.errorBackpack = null;
+        }
+      )
+      .addMatcher(
+        isRejected(getBackpack, updateBackpackOnPurchase, updateBackpackOnSell),
+        (state, action) => {
+          state.isLoadingBackpack = false;
+          state.errorBackpack = action.payload;
+        }
+      )
       .addMatcher(isPending(registerUser, loginUser), (state) => {
         state.isLoadingUser = true;
         state.errorUser = null;
