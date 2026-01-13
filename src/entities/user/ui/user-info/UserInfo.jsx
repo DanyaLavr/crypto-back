@@ -13,12 +13,12 @@ export default function UserInfo() {
   if (!user) return null;
 
   return (
-    <div className="flex items-center gap-5">
+    <div className="hidden md:grid md:justify-items-end md:gap-3 lg:flex lg:items-center lg:gap-5">
       <p className="text-stone-50 text-3xl font-bold">{user.login}</p>
       <Button
         color="light"
         background={false}
-        className="h-full border-2 py-0 px-9 rounded-2xl"
+        className="h-full border-2 rounded-2xl lg:py-3 lg:px-9"
         onClick={async () => {
           await dispatch(logoutUser()).unwrap();
           router.replace("/");

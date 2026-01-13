@@ -11,10 +11,10 @@ export default function BackpackItem({
   const profit = invested * (getGrowthPercent / 100);
 
   return (
-    <li className="grid gap-4 p-4 bg-black text-stone-50 rounded-xl border border-gray-700 shadow-lg hover:scale-105 transition-transform">
+    <li className="grid gap-4 w-full md:w-auto p-4 bg-black text-stone-50 rounded-xl border border-gray-700 shadow-lg hover:scale-105 transition-transform">
       <h2 className="text-2xl font-bold">{base}/USDT</h2>
 
-      <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+      <div className="grid  md:grid-cols-2 gap-x-4 gap-y-2 text-sm">
         <p>Count: {count}</p>
         <p>Average Price: {price}$</p>
         <p>

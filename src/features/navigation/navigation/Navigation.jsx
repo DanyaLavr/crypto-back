@@ -7,7 +7,7 @@ import { selectUser } from "@/entities/user/modules/redux/selectors";
 export default function Navigation() {
   const user = useSelector(selectUser);
   return (
-    <nav className="text-white font-bold text-3xl ">
+    <nav className="text-white font-bold text-2xl lg:text-3xl ">
       <ul className="grid gap-5">
         <li>
           <Link href="/">Home</Link>
